@@ -167,7 +167,7 @@ app.post('/api/transactions/new-transaction', async (req, res, next) => {
 // Generic health check and error messages.
 app.get('/api/health-check', async (req, res, next) => {
   const [rows] = await db.query('select \'successfully connected\' as "message"');
-  res.json(rows);
+  res.json(rows[0]);
 });
 
 app.use('/api', (req, res, next) => {

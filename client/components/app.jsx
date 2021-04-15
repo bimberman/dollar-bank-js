@@ -1,25 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import store from '../utils/store';
+import useGetCustomers from '../hooks/useCustomer';
+import useGetAccounts from '../hooks/useAccount';
+import getHealthCheck from '../hooks/useHealthCheck';
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: null,
-      isLoading: true
-    };
-  }
+const App = props => {
 
-  componentDidMount() {
-    fetch('/api/health-check')
-      .then(res => res.json())
-      .then(data => this.setState({ message: data.message || data.error }))
-      .catch(err => this.setState({ message: err.message }))
-      .finally(() => this.setState({ isLoading: false }));
-  }
+  const [message, setMessage] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
-  render() {
-    return this.state.isLoading
-      ? <h1>Testing connections...</h1>
-      : <h1>{this.state.message.toUpperCase()}</h1>;
-  }
-}
+  useEffect(async () => {
+    const data = await getHealthCheck();
+    if (data) {
+      setMessage(data.message);
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    useGetCustomers();
+    store.subscribe(() => {
+      // eslint-disable-next-line no-console
+      console.log('store changed!', store.getState());
+    });
+  }, []);
+
+  return (
+      <>
+      {
+        isLoading
+          ? <h1>Loading...</h1>
+          : <h1>{ message.toUpperCase() }</h1>
+      }
+      </>
+  );
+};
+
+export default App;
