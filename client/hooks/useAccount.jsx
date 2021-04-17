@@ -32,15 +32,15 @@ const getAccountById = async accountId => {
   return data;
 };
 
-// const postNewAccount = async props => {
-//   const {
-//     amount,
-//     label,
-//     accountId,
-//     accountId
-//   } = props;
-//   const { data } = await axios.post('accounts/new-account/', { amount, label, accountId, accountId });
-//   // eslint-disable-next-line no-console
-//   console.log(data);
-//   return data;
-// };
+const postNewAccount = async props => {
+  const {
+    amount,
+    label,
+    accountId,
+    accountId
+  } = props;
+  const { data } = await axios.post('accounts/new-account/', { amount, label, accountId, accountId });
+  // eslint-disable-next-line no-console
+  console.log(data);
+  return data;
+};

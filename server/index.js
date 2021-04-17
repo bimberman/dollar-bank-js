@@ -22,6 +22,7 @@ app.get('/api/customers', async (req, res, next) => {
   res.json(rows);
 });
 
+// convenient accessor for user information during testing
 app.get('/api/customers/:id', async (req, res, next) => {
   const { id } = req.params;
   if (!id) {
@@ -34,6 +35,26 @@ app.get('/api/customers/:id', async (req, res, next) => {
     return;
   }
   const [rows] = await db.query('select * from customers where id=?', [customerId]);
+  res.json(rows);
+});
+
+// user authentication
+app.post('/api/customers/auth', async (req, res, next) => {
+  const { id, password } = req.params;
+  if (!id) {
+    next(new ClientError('No customer id was provided and it is required!', 400));
+    return;
+  }
+  if (!password) {
+    next(new ClientError('No customer password was provided and it is required!', 400));
+    return;
+  }
+  const customerId = parseInt(id);
+  if (isNaN(customerId) || customerId < 0) {
+    next(new ClientError(`Expected an integer. ${id} is not a invalid id.`, 400));
+    return;
+  }
+  const [rows] = await db.query('select * from customers where id=? and password=?', [customerId, password]);
   res.json(rows);
 });
 

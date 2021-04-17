@@ -15,6 +15,13 @@ export function useGetCustomerById(customerId) {
   });
 }
 
+export function usePostCustomerAuthById(customerId, password) {
+  return store.dispatch({
+    type: 'POST_CUSTOMER_AUTH_BY_ID',
+    payload: postCustomerAuthById(customerId, password)
+  });
+}
+
 export function usePostNewCustomer(props) {
   return store.dispatch({
     type: 'POST_NEW_CUSTOMER',
@@ -29,6 +36,11 @@ const getCustomers = async customerId => {
 
 const getCustomerById = async customerId => {
   const { data } = await axios.get(`customers/${customerId}/`);
+  return data;
+};
+
+const postCustomerAuthById = async (customerId, password) => {
+  const { data } = await axios.post('customers/auth/', { customerId, password });
   return data;
 };
 
