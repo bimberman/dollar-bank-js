@@ -27,7 +27,6 @@ export default function LogIn() {
   };
 
   const handleViewPass = e => {
-    console.log(e);
     setShowPassword(!showPassword);
   };
 
@@ -90,7 +89,7 @@ export default function LogIn() {
                 <LockIcon color="gray.300" />
               </InputLeftElement>
               <Input
-                type={showPassword ? 'password' : 'text'}
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 autoComplete="true"
                 onChange={handlePasswordInputChange}
@@ -106,14 +105,15 @@ export default function LogIn() {
                     bg="transparent"
                     onClick={handleViewPass}
                     _focus={{
-                      boxShadow: 'none'
+                      boxShadow: 'none',
+                      background: 'transparent'
                     }}>
                     {showPassword
                       ? (
-                      <ViewOffIcon name="view-off" />
+                        <ViewOffIcon name="view-off" />
                         )
                       : (
-                      <ViewIcon name="view" />
+                        <ViewIcon name="view" />
                         )}
                   </Button>
               </InputRightElement>
