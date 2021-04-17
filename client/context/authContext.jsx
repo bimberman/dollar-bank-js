@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import cookies from 'js-cookie';
 import { Center, Spinner } from '@chakra-ui/react';
-import { usePostCustomerAuthById } from '../hooks/useCustomer';
+import { usePostUserAuthById } from '../hooks/useUser';
 
 const AuthContext = React.createContext();
 AuthContext.displayName = 'AuthContext';
@@ -62,9 +62,9 @@ function useProvidedAuth() {
     return false;
   };
 
-  const signIn = (customerId, password) => {
+  const signIn = (userId, password) => {
     setIsLoading(true);
-    const something = usePostCustomerAuthById(customerId, password);
+    return usePostUserAuthById(userId, password);
   };
 
   const signOut = () => {
@@ -80,4 +80,4 @@ function useProvidedAuth() {
   };
 }
 
-export { useAuth };
+export { useAuth, useProvidedAuth };

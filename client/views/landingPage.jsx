@@ -37,7 +37,7 @@ export default function LandingPage() {
           boxShadow="30 10px 20px rgba(200, 200, 200, 0.1)">
           { isLogIn
             ? <LogIn />
-            : <SignUp/>
+            : <SignUp />
           }
           <HStack mt="auto" mx="auto" mb="5vh" alignSelf="flex-end" justifyContent="center" {...group}>
             {options.map(value => {

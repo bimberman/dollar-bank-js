@@ -16,50 +16,47 @@ app.use(sessionMiddleware);
 app.use(express.json());
 
 // Routes
-/* @@@@@@@@@@@@@@@@@@@@@@@@ customers @@@@@@@@@@@@@@@@@@@@@@@@ */
-app.get('/api/customers', async (req, res, next) => {
-  const [rows] = await db.query('select * from customers');
+/* @@@@@@@@@@@@@@@@@@@@@@@@ users @@@@@@@@@@@@@@@@@@@@@@@@ */
+app.get('/api/users', async (req, res, next) => {
+  const [rows] = await db.query('select * from users');
   res.json(rows);
 });
 
 // convenient accessor for user information during testing
-app.get('/api/customers/:id', async (req, res, next) => {
+app.get('/api/users/:id', async (req, res, next) => {
   const { id } = req.params;
   if (!id) {
-    next(new ClientError('No customer id was provided and it is required!', 400));
+    next(new ClientError('No user id was provided and it is required!', 400));
     return;
   }
-  const customerId = parseInt(id);
-  if (isNaN(customerId) || customerId < 0) {
+  const userId = parseInt(id);
+  if (isNaN(userId) || userId < 0) {
     next(new ClientError(`Expected an integer. ${id} is not a invalid id.`, 400));
     return;
   }
-  const [rows] = await db.query('select * from customers where id=?', [customerId]);
+  const [rows] = await db.query('select * from users where id=?', [userId]);
   res.json(rows);
 });
 
 // user authentication
-app.post('/api/customers/auth', async (req, res, next) => {
-  const { id, password } = req.params;
-  if (!id) {
-    next(new ClientError('No customer id was provided and it is required!', 400));
+app.post('/api/users/auth', async (req, res, next) => {
+  const { userId, password } = req.body;
+  if (!userId) {
+    next(new ClientError('No user id was provided and it is required!', 400));
     return;
   }
   if (!password) {
-    next(new ClientError('No customer password was provided and it is required!', 400));
+    next(new ClientError('No user password was provided and it is required!', 400));
     return;
   }
-  const customerId = parseInt(id);
-  if (isNaN(customerId) || customerId < 0) {
-    next(new ClientError(`Expected an integer. ${id} is not a invalid id.`, 400));
-    return;
-  }
-  const [rows] = await db.query('select * from customers where id=? and password=?', [customerId, password]);
-  res.json(rows);
+
+  const [rows] = await db.query('select * from users where user_id=? and password=?', [userId, password]);
+  if (rows.length) res.json(rows);
+  res.sendStatus(401);
 });
 
-// creates a new customer
-app.post('/api/customers/new-customer', async (req, res, next) => {
+// creates a new user
+app.post('/api/users/new-user', async (req, res, next) => {
   const {
     fName,
     lName,
@@ -85,8 +82,8 @@ app.post('/api/customers/new-customer', async (req, res, next) => {
     next(new ClientError(`Expected a deposit amount. Instead received ${amount}, which is invalid.`, 400));
     return;
   }
-  await db.query(`INSERT INTO dollar_bank.customers (f_name, l_name, address, phone, user_id, password, balance)
-                  VALUES (?, ?, ?, ?, ?, ?, ?)`, [fName, lName, address, phone, userId, password, balance]);
+  await db.query(`INSERT INTO dollar_bank.users (f_name, l_name, address, phone, user_id, password, balance)
+                                 VALUES (?, ?, ?, ?, ?, ?, ?)`, [fName, lName, address, phone, userId, password, balance]);
   res.sendStatus(200);
 });
 
@@ -116,11 +113,11 @@ app.post('/api/accounts/new-account', async (req, res, next) => {
   const {
     type,
     amount,
-    customerId
+    userId
   } = req.body;
 
-  if (!customerId) {
-    next(new ClientError('No customer id was provided and it is required for registration!', 400));
+  if (!userId) {
+    next(new ClientError('No user id was provided and it is required for registration!', 400));
     return;
   }
 
@@ -129,8 +126,8 @@ app.post('/api/accounts/new-account', async (req, res, next) => {
     next(new ClientError(`Expected a deposit amount. Instead received ${amount}, which is invalid.`, 400));
     return;
   }
-  await db.query(`INSERT INTO dollar_bank.accounts (type, balance, customer_id)
-                  VALUES (?, ?, ?)`, [type || 'CHECKING', balance, customerId]);
+  await db.query(`INSERT INTO dollar_bank.accounts (type, balance, user_id)
+                  VALUES (?, ?, ?)`, [type || 'CHECKING', balance, userId]);
   res.sendStatus(200);
 });
 
@@ -161,11 +158,11 @@ app.post('/api/transactions/new-transaction', async (req, res, next) => {
     amount,
     label,
     accountId,
-    customerId
+    userId
   } = req.body;
 
-  if (!customerId) {
-    next(new ClientError('No customer id was provided and it is required for registration!', 400));
+  if (!userId) {
+    next(new ClientError('No user id was provided and it is required for registration!', 400));
     return;
   }
 
@@ -180,8 +177,8 @@ app.post('/api/transactions/new-transaction', async (req, res, next) => {
     return;
   }
 
-  await db.query(`INSERT INTO dollar_bank.accounts (amount, label, customer_id, account_id)
-                  VALUES (?, ?, ?, ?)`, [balance, label || 'transaction', customerId, accountId]);
+  await db.query(`INSERT INTO dollar_bank.accounts (amount, label, user_id, account_id)
+                  VALUES (?, ?, ?, ?)`, [balance, label || 'transaction', userId, accountId]);
   res.sendStatus(200);
 });
 

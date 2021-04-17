@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChakraProvider, theme } from '@chakra-ui/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import AuthProvider from './AuthContext';
+import AuthProvider from './authContext';
 
 const brandTheme = {
   ...theme,
