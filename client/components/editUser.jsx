@@ -16,21 +16,11 @@ import {
 } from '@chakra-ui/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faSignature, faUser } from '@fortawesome/free-solid-svg-icons';
-import { usePostNewUser } from '../hooks/useUser';
-import { useHistory } from 'react-router-dom';
+import { usePutUpdateUser } from '../hooks/useUser';
 
-export default function SignUp(props) {
+export default function EditUser(props) {
   const [isLoading, setIsLoading] = useState(false);
-  const history = useHistory();
-  const [user, setUser] = useState({
-    fName: '',
-    lName: '',
-    address: '',
-    userId: '',
-    phone: '',
-    password: '',
-    amount: 0
-  });
+  const [user, setUser] = useState({});
   const [isValidPass, setIsValidPass] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -45,9 +35,11 @@ export default function SignUp(props) {
     e.preventDefault();
     if (user) {
       setIsLoading(true);
-      const res = await usePostNewUser(user);
+      const updatedUser = user;
+      updatedUser.id = props.user.id;
+      const res = await usePutUpdateUser(updatedUser);
       if (res) {
-        history.push('/home-page');
+        setIsLoading(false);
       }
     }
   };
@@ -110,7 +102,7 @@ export default function SignUp(props) {
                 fontSize="1.2em">
                 <FontAwesomeIcon icon={faSignature} />
               </InputLeftElement>
-              <Input type="text" placeholder="First Name" onChange={handleInputChange} value={user.fName || ''} data-field="fName" />
+              <Input type="text" placeholder="First Name" onChange={handleInputChange} data-field="fName" />
             </InputGroup>
             <InputGroup mb="1vh">
               <InputLeftElement
@@ -189,15 +181,6 @@ export default function SignUp(props) {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-            </InputGroup>
-            <InputGroup mb="1vh">
-              <InputLeftElement
-                pointerEvents="none"
-                color="gray.300"
-                fontSize="1.2em">
-                $
-                </InputLeftElement>
-              <Input type="number" placeholder="Enter amount" onChange={handleInputChange} data-field="amount" />
             </InputGroup>
             <Button
               isLoading={isLoading}

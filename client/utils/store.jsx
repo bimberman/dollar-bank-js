@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
-import customers, { accounts, transactions } from './reducer';
+import users from './reducer';
 
-const store = createStore(customers);
+const store = createStore(users);
 
 export default store;

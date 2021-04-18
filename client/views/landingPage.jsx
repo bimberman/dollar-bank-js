@@ -26,7 +26,7 @@ export default function LandingPage() {
   return (
     <>
       <Flex bg="white" h="100vh" flexDir="column">
-        <NavBar alignSelf="flex-start"/>
+        <NavBar alignSelf="flex-start" heading="SignIn/LogIn"/>
         <Flex
           h="60vh"
           w="40vw"

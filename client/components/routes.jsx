@@ -1,20 +1,16 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import LandingPage from '../views/landingPage';
-import LogIn from '../components/logIn';
-import Home from '../views/home';
+import HomePage from '../views/homePage';
 
 export default function Routes() {
   return (
     <Switch>
-      <Route path="/">
+      <Route exact path="/">
         <LandingPage />
       </Route>
-      <Route exact path="/home">
-        <Home />
-      </Route>
-      <Route path="/login">
-        <LogIn />
+      <Route path="/home-page">
+        <HomePage />
       </Route>
     </Switch>
   );

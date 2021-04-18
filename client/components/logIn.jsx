@@ -12,12 +12,14 @@ import { LockIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { usePostUserAuthById } from '../hooks/useUser';
+import { useHistory } from 'react-router-dom';
 
 export default function LogIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [isValidPass, setIsValidPass] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [user, setUser] = useState(null);
+  const history = useHistory();
 
   const handleInputChange = e => {
     setUser({
@@ -48,14 +50,10 @@ export default function LogIn() {
     e.preventDefault();
     if (user && user.userId && user.password) {
       setIsLoading(true);
-      const res = usePostUserAuthById(user.userId, user.password);
-      if (res.ok) {
-        // eslint-disable-next-line no-console
-        console.log(res.ok);
+      const res = await usePostUserAuthById(user.userId, user.password);
+      if (res) {
+        history.push('/home-page');
       }
-    } else {
-      // eslint-disable-next-line no-console
-      console.log('user ID or password were not provided');
     }
   };
 

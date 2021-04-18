@@ -8,10 +8,10 @@ export default async function useGetTransactions() {
   });
 }
 
-export function useGetTransactionById(transactionId) {
+export async function useGetTransactionByUserId(userId) {
   return store.dispatch({
-    type: 'GET_TRANSACTION_BY_ID',
-    payload: getTransactionById(transactionId)
+    type: 'GET_TRANSACTION_BY_USER_ID',
+    payload: await getTransactionByUserId(userId)
   });
 }
 
@@ -27,8 +27,9 @@ const getTransactions = async transactionId => {
   return data;
 };
 
-const getTransactionById = async transactionId => {
-  const { data } = await axios.get(`transactions/${transactionId}/`);
+const getTransactionByUserId = async userId => {
+  const { data } = await axios.get(`transactions/${userId}/`);
+  console.log(data);
   return data;
 };
 

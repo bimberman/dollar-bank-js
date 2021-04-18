@@ -15,17 +15,24 @@ export function useGetUserById(userId) {
   });
 }
 
-export function usePostUserAuthById(userId, password) {
+export async function usePostUserAuthById(userId, password) {
   return store.dispatch({
     type: 'POST_USER_AUTH_BY_ID',
-    payload: postUserAuthById(userId, password)
+    payload: await postUserAuthById(userId, password)
   });
 }
 
-export function usePostNewUser(user) {
+export async function usePostNewUser(user) {
   return store.dispatch({
     type: 'POST_NEW_USER',
-    payload: postNewUser(user)
+    payload: await postNewUser(user)
+  });
+}
+
+export async function usePutUpdateUser(user) {
+  return store.dispatch({
+    type: 'PUT_UPDATE_USER',
+    payload: await putUpdateUser(user)
   });
 }
 
@@ -63,7 +70,27 @@ const postNewUser = async user => {
     password,
     amount
   });
-  // eslint-disable-next-line no-console
-  console.log(data);
+
+  return data;
+};
+
+const putUpdateUser = async user => {
+  console.log(user);
+  const {
+    fName,
+    lName,
+    address,
+    phone,
+    userId,
+    password
+  } = user;
+  const { data } = await axios.put(`users/update-user/${user.id}`, {
+    fName,
+    lName,
+    address,
+    phone,
+    userId,
+    password
+  });
   return data;
 };
