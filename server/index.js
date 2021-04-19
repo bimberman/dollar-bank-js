@@ -120,9 +120,9 @@ app.post('/api/users/new-user', async (req, res, next) => {
                                 VALUES (?, ?, ?)`,
   [type || 'CHECKING', balance, dbUserId[0].id]);
   const [dbAccountId] = await db.query('select id from accounts where user_id=? order by id desc limit 1', [dbUserId[0].id]);
-  await db.query(`INSERT INTO dollar_bank.transactions (amount, label, datetime, user_id, account_id)
-                                VALUES (?, ?, ?, ?, ?)`,
-  [balance, `Initial ${type || 'CHECKING'} deposit`, dateFormatter(Date().toLocaleString('en-GB')), dbUserId[0].id, dbAccountId[0].id]);
+  await db.query(`INSERT INTO dollar_bank.transactions (amount, label, user_id, account_id)
+                                VALUES (?, ?, ?, ?)`,
+  [balance, `Initial ${type || 'CHECKING'} deposit`, dbUserId[0].id, dbAccountId[0].id]);
   res.json(dbUserId[0]);
 });
 
@@ -199,6 +199,27 @@ app.put('/api/users/update-user/:id', async (req, res, next) => {
   res.sendStatus(401);
 });
 
+/* @@@@@@@@@@@@@@@@@@@@@@@@ accounts @@@@@@@@@@@@@@@@@@@@@@@@ */
+app.get('/api/accounts', async (req, res, next) => {
+  const [rows] = await db.query('select * from accounts');
+  res.json(rows);
+});
+
+app.get('/api/accounts/:id', async (req, res, next) => {
+  const { id } = req.params;
+  if (!id) {
+    next(new ClientError('No user id was provided and it is required!', 400));
+    return;
+  }
+  const userId = parseInt(id);
+  if (isNaN(userId) || userId < 0) {
+    next(new ClientError(`Expected a positive integer. ${id} is not a invalid id.`, 400));
+    return;
+  }
+  const [rows] = await db.query('select * from accounts where user_id=? order by id desc limit 5', [userId]);
+  res.json(rows);
+});
+
 /* @@@@@@@@@@@@@@@@@@@@@@@@ transactions @@@@@@@@@@@@@@@@@@@@@@@@ */
 app.get('/api/transactions', async (req, res, next) => {
   const [rows] = await db.query('select * from transactions');
@@ -239,16 +260,16 @@ app.post('/api/transactions/new-transaction', async (req, res, next) => {
     return;
   }
 
-  const balance = parseFloat(amount) || 0;
-  if (isNaN(balance) || balance < 0) {
+  const transactionAmount = parseFloat(amount) || 0;
+  if (isNaN(transactionAmount)) {
     next(new ClientError(`Expected a deposit amount. Instead received ${amount}, which is invalid.`, 400));
     return;
   }
 
   await db.query(`INSERT INTO dollar_bank.transactions (amount, label, user_id, account_id)
-                  VALUES (?, ?, ?, ?)`, [balance, label || 'transaction', userId, accountId]);
-  await db.query('update dollar_bank.accounts set balance = balance+? where id = ? and user_id = ?', [balance, accountId, userId]);
-  await db.query('update dollar_bank.users set balance = balance+? where id = ?', [balance, userId]);
+                  VALUES (?, ?, ?, ?)`, [transactionAmount, label || 'transaction', userId, accountId]);
+  await db.query('update dollar_bank.accounts set balance = balance+? where id = ? and user_id = ?', [transactionAmount, accountId, userId]);
+  await db.query('update dollar_bank.users set balance = balance+? where id = ?', [transactionAmount, userId]);
   res.sendStatus(200);
 });
 
@@ -280,13 +301,13 @@ app.listen(process.env.PORT, () => {
 });
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@ Helper functions @@@@@@@@@@@@@@@@@@@@@@@@ */
-const dateFormatter = dateTime => {
-  const monthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const split = dateTime.split(' ');
-  const day = split[2];
-  const month = monthMap.indexOf(split[1]);
-  const year = split[3];
-  const time = split[4];
-  const date = `${year}-${month}-${day}`;
-  return `${date} ${time}`;
-};
+// const dateFormatter = dateTime => {
+//   const monthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+//   const split = dateTime.split(' ');
+//   const day = split[2];
+//   const month = monthMap.indexOf(split[1]);
+//   const year = split[3];
+//   const time = split[4];
+//   const date = `${year}-${month}-${day}`;
+//   return `${date} ${time}`;
+// };

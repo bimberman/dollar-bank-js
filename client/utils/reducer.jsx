@@ -3,8 +3,10 @@ export default function users(state = {}, action) {
     case 'GET_CUSTOMERS':
       // the payload is a list of customers that needs to be destructured
       return { ...state, users: { ...action.payload } };
-    case 'GET_TRANSACTION_BY_USER_ID':
+    case 'GET_TRANSACTIONS_BY_USER_ID':
       return { ...state, transactions: [...action.payload] };
+    case 'GET_ACCOUNTS_BY_USER_ID':
+      return { ...state, accounts: [...action.payload] };
     case 'POST_NEW_USER':
       return { ...state, user: { ...action.payload } };
     case 'POST_USER_AUTH_BY_ID':

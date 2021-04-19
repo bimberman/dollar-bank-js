@@ -8,10 +8,10 @@ export default async function useGetTransactions() {
   });
 }
 
-export async function useGetTransactionByUserId(userId) {
+export async function useGetTransactionsByUserId(userId) {
   return store.dispatch({
-    type: 'GET_TRANSACTION_BY_USER_ID',
-    payload: await getTransactionByUserId(userId)
+    type: 'GET_TRANSACTIONS_BY_USER_ID',
+    payload: await getTransactionsByUserId(userId)
   });
 }
 
@@ -27,9 +27,8 @@ const getTransactions = async transactionId => {
   return data;
 };
 
-const getTransactionByUserId = async userId => {
+const getTransactionsByUserId = async userId => {
   const { data } = await axios.get(`transactions/${userId}/`);
-  console.log(data);
   return data;
 };
 
@@ -38,10 +37,8 @@ const postNewTransaction = async props => {
     amount,
     label,
     accountId,
-    customerId
+    userId
   } = props;
-  const { data } = await axios.post('transactions/new-transaction/', { amount, label, accountId, customerId });
-  // eslint-disable-next-line no-console
-  console.log(data);
+  const { data } = await axios.post('transactions/new-transaction/', { amount, label, accountId, userId });
   return data;
 };

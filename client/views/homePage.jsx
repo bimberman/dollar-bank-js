@@ -5,8 +5,10 @@ import { Flex, HStack, useRadioGroup } from '@chakra-ui/react';
 import RadioCard from '../components/radioCard';
 import User from '../components/user';
 import ViewTransactions from '../components/viewTransactions';
-import { useGetTransactionByUserId } from '../hooks/useTransaction';
+import { useGetTransactionsByUserId } from '../hooks/useTransaction';
+import { useGetAccountsByUserId } from '../hooks/useAccount';
 import EditUser from '../components/editUser';
+import Transactions from '../components/transactions';
 
 export default function HomePage() {
   const user = store.getState().user;
@@ -14,7 +16,8 @@ export default function HomePage() {
 
   React.useEffect(() => {
     if (user) {
-      useGetTransactionByUserId(user.id);
+      useGetTransactionsByUserId(user.id);
+      useGetAccountsByUserId(user.id);
     }
   }, [user]);
 
@@ -22,6 +25,7 @@ export default function HomePage() {
     if (value === 'User Profile') setView(<User user={user} />);
     if (value === 'View Transactions') setView(<ViewTransactions />);
     if (value === 'Manage Account') setView(<EditUser user={user}/>);
+    if (value === 'Transactions') setView(<Transactions user={user} />);
   };
 
   const { getRootProps, getRadioProps } = useRadioGroup({
@@ -31,7 +35,7 @@ export default function HomePage() {
   });
   const group = getRootProps();
 
-  const options = ['User Profile', 'View Transactions', 'Manage Account', 'Withdraw', 'Deposit'];
+  const options = ['User Profile', 'View Transactions', 'Manage Account', 'Transactions'];
 
   return (
     <>

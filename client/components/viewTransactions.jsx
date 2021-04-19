@@ -1,15 +1,16 @@
 import React from 'react';
-import { Heading, Spacer, Table, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Heading, Table, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
 import store from '../utils/store';
-import { useGetTransactionByUserId } from '../hooks/useTransaction';
+import { useGetTransactionsByUserId } from '../hooks/useTransaction';
 
 export default function ViewTransactions() {
   const transactions = store.getState().transactions;
+  const accounts = store.getState().accounts;
   const headers = Object.keys(transactions[0]).filter(header => header !== 'modification_time');
 
   React.useEffect(() => {
     if (store.getState().user) {
-      useGetTransactionByUserId(store.getState().user.id);
+      useGetTransactionsByUserId(store.getState().user.id);
     }
   }, []);
 
@@ -55,6 +56,9 @@ export default function ViewTransactions() {
             <Th fontSize="20px" px="5px" textAlign="center">${transactions.reduce((sum, transaction) => {
               return parseInt(sum) + parseInt(transaction.amount);
             }, [0])}</Th>
+            <Th fontSize="20px" px="5px" textAlign="center"></Th>
+            <Th rowSpan="2" fontSize="20px" px="5px" textAlign="center">Account Balance:</Th>
+            <Th fontSize="20px" px="5px" textAlign="center">${accounts[0].balance}</Th>
           </Tr>
         </Tfoot>
       </Table>
