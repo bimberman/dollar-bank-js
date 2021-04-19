@@ -65,7 +65,8 @@ app.post('/api/users/auth', async (req, res, next) => {
     return;
   }
 
-  const [rows] = await db.query('select * from users where user_id=? and password=?', [userId, password]);
+  const [rows] = await db.query('select * from users where user_id=? and `password`=?', [userId, password]);
+
   if (rows.length) {
     const row = rows[0];
     const { id, f_name: fName, l_name: lName, user_id: userId, address, phone, balance } = row;
