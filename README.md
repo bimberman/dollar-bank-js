@@ -13,20 +13,14 @@ A JS project for Collabera
 ![Express.js](https://icongr.am/devicon/express-original-wordmark.svg?size=128&color=currentColor) 
 ![Redux](https://raw.githubusercontent.com/devicons/devicon/c7d326b6009e60442abc35fa45706d6f30ee4c8e/icons/redux/redux-original.svg)
 
-## Live Demo
-
-Try the application live at: [om.benimberman.com](https://om.benimberman.com)
-
 ## Features
 
-* User can view a catalog of items for sale
-* User can view the details of an item
-* User can add an item to their cart
-* User can view their cart summary
-* User can place an order
-
-## Preview
-![Live demo](https://raw.githubusercontent.com/bimberman/om/master/live-demo.gif)
+* User can create an account
+* User can login
+* User can view personal details
+* User can view last 5 transactions
+* User can change user details
+* User can deposit/withdraw/transfer funds
 
 ## Development
 
@@ -34,14 +28,14 @@ Try the application live at: [om.benimberman.com](https://om.benimberman.com)
 
 - Node.js 10 or higher
 - NPM 6 or higher
-- PostgreSQL 10 or higher
+- MySql 8 or higher
 
 ### Getting Started
 
 1. Clone the repository
     ```shell
     git clone https://github.com/bimberman/om.git
-    cd om
+    cd dollar-bank-js
     ```
 2. Make a copy of the .env.example file, name the new file .env, and edit the file
     1. Edit the .env file as appropriate for your setup (for examaple if port 3000 is used by another program, then use a different port) 
@@ -66,3 +60,47 @@ Try the application live at: [om.benimberman.com](https://om.benimberman.com)
     ```shell
     npm run dev
     ```
+```mysql
+CREATE DATABASE`dollar_bank`
+
+CREATE TABLE`users`(
+  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `f_name` varchar(45) NOT NULL,
+  `l_name` varchar(45) NOT NULL,
+  `address` varchar(70) DEFAULT NULL,
+  `phone` varchar(19) DEFAULT NULL,
+  `user_id` varchar(45) NOT NULL,
+  `password` varchar(45) DEFAULT NULL,
+  `balance` float NOT NULL,
+  PRIMARY KEY(`id`),
+  UNIQUE KEY`id_UNIQUE`(`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 31 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE`accounts`(
+  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) NOT NULL,
+  `balance` float NOT NULL,
+  `user_id` int(10) unsigned zerofill NOT NULL,
+  PRIMARY KEY(`id`),
+  UNIQUE KEY`id_UNIQUE`(`id`),
+  KEY`user_ind`(`user_id`),
+  CONSTRAINT`accounts_ibfk_1` FOREIGN KEY(`user_id`) REFERENCES`users`(`id`) ON DELETE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 25 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE`transactions`(
+  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `amount` float NOT NULL,
+  `label` text,
+  `user_id` int(10) unsigned zerofill NOT NULL,
+  `account_id` int(10) unsigned zerofill NOT NULL,
+  `creation_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modification_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY(`id`),
+  UNIQUE KEY`id_UNIQUE`(`id`),
+  KEY`FK_Customers_Transactions_id_idx`(`user_id`),
+  KEY`FK_Accounts_Transactions_id_idx`(`account_id`),
+  CONSTRAINT`FK_Accounts_Transactions_id` FOREIGN KEY(`account_id`) REFERENCES`accounts`(`id`),
+  CONSTRAINT`FK_Customers_Transactions_id` FOREIGN KEY(`user_id`) REFERENCES`users`(`id`) ON DELETE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 30 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+```
