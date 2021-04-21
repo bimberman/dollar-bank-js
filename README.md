@@ -11,7 +11,7 @@ A JS project for Collabera
 ![NPM](https://icongr.am/devicon/npm-original-wordmark.svg?size=128&color=currentColor) 
 ![Node.js](https://icongr.am/devicon/nodejs-original-wordmark.svg?size=128&color=currentColor) 
 ![Express.js](https://icongr.am/devicon/express-original-wordmark.svg?size=128&color=currentColor) 
-![Redux](https://img2.pngio.com/redux-react-npm-state-management-png-573x572px-redux-area-redux-png-290_290.jpg)
+![Redux](https://raw.githubusercontent.com/devicons/devicon/c7d326b6009e60442abc35fa45706d6f30ee4c8e/icons/redux/redux-original.svg)
 
 ## Live Demo
 
