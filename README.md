@@ -41,9 +41,14 @@ Redux
     1. Edit the .env file as appropriate for your setup (for examaple if port 3000 is used by another program, then use a different port) 
     2. Change the user to dev and password to lfz
     ```
-    PORT=3001
-    DEV_SERVER_PORT=3000
-    DATABASE_URL=postgres://user:pass@localhost/om
+    PORT=3000
+    DEV_SERVER_PORT=3001
+
+    DB_HOST=your_host (usually localhost)
+    DB_NAME=dollar_bank
+    DB_USER=super_secure_user
+    DB_PASS=super_secure_password
+    
     SESSION_SECRET=secret
     SESSION_EXPIRY=28800000
     ```
@@ -51,15 +56,9 @@ Redux
     ```shell
     npm install
     ```
-4. Verify the postgresql service is running
-    1. Please note that if the postgresql service is not running, then change **STATUS** with **START** in the following command
-    ```shell
-    sudo service postgresql status
-    ```
-5. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
-    ```shell
-    npm run dev
-    ```
+4. Verify mysql database is running
+
+5. Create the database and the tables
 ```mysql
 CREATE DATABASE`dollar_bank`
 
@@ -104,3 +103,8 @@ CREATE TABLE`transactions`(
   CONSTRAINT`FK_Customers_Transactions_id` FOREIGN KEY(`user_id`) REFERENCES`users`(`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 30 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 ```
+
+5. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
+    ```shell
+    npm run dev
+    ```
