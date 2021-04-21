@@ -37,7 +37,7 @@ A JS project for Collabera
     git clone https://github.com/bimberman/om.git
     cd dollar-bank-js
     ```
-2. Make a copy of the .env.example file, name the new file .env, and edit the file
+2. Edit the .env file
     1. Edit the .env file as appropriate for your setup (for examaple if port 3000 is used by another program, then use a different port)
     2. Change the user to dev and password to lfz
     ```
