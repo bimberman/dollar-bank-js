@@ -1,7 +1,6 @@
 export default function users(state = {}, action) {
   switch (action.type) {
     case 'GET_CUSTOMERS':
-      // the payload is a list of customers that needs to be destructured
       return { ...state, users: { ...action.payload } };
     case 'GET_TRANSACTIONS_BY_USER_ID':
       return { ...state, transactions: [...action.payload] };

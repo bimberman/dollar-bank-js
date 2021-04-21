@@ -4,7 +4,7 @@ import App from './components/app';
 import AppProviders from './context/index';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:3005/api/';
+axios.defaults.baseURL = 'http://localhost:3006/api/';
 
 ReactDOM.render(
   <AppProviders>

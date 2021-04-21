@@ -1,6 +1,7 @@
 // Dependencies
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 
 const db = require('./database');
 const ClientError = require('./client-error');
@@ -14,6 +15,8 @@ app.use(staticMiddleware);
 app.use(sessionMiddleware);
 
 app.use(express.json());
+
+app.use(cors());
 
 /* @@@@@@@@@@@@@@@@@@@@@@@@ Routes @@@@@@@@@@@@@@@@@@@@@@@@ */
 /* @@@@@@@@@@@@@@@@@@@@@@@@ users @@@@@@@@@@@@@@@@@@@@@@@@ */
@@ -56,6 +59,7 @@ app.get('/api/users/:id', async (req, res, next) => {
 // user authentication
 app.post('/api/users/auth', async (req, res, next) => {
   const { userId, password } = req.body;
+
   if (!userId) {
     next(new ClientError('No user id was provided and it is required!', 400));
     return;
