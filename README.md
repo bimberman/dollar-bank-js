@@ -84,7 +84,7 @@ A JS project for Collabera
     PRIMARY KEY(`id`),
     UNIQUE KEY`id_UNIQUE`(`id`),
     KEY`user_ind`(`user_id`),
-    CONSTRAINT`accounts_ibfk_1` FOREIGN KEY(`user_id`) REFERENCES`users`(`id`) ON DELETE CASCADE
+    CONSTRAINT `accounts_ibfk_1` FOREIGN KEY(`user_id`) REFERENCES`users`(`id`) ON DELETE CASCADE
   ) ENGINE = InnoDB AUTO_INCREMENT = 25 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
   CREATE TABLE`transactions`(
@@ -99,8 +99,8 @@ A JS project for Collabera
     UNIQUE KEY`id_UNIQUE`(`id`),
     KEY`FK_Customers_Transactions_id_idx`(`user_id`),
     KEY`FK_Accounts_Transactions_id_idx`(`account_id`),
-    CONSTRAINT`FK_Accounts_Transactions_id` FOREIGN KEY(`account_id`) REFERENCES`accounts`(`id`),
-    CONSTRAINT`FK_Customers_Transactions_id` FOREIGN KEY(`user_id`) REFERENCES`users`(`id`) ON DELETE CASCADE
+    CONSTRAINT `FK_Accounts_Transactions_id` FOREIGN KEY(`account_id`) REFERENCES`accounts`(`id`),
+    CONSTRAINT `FK_Customers_Transactions_id` FOREIGN KEY(`user_id`) REFERENCES`users`(`id`) ON DELETE CASCADE
   ) ENGINE = InnoDB AUTO_INCREMENT = 30 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
   ```
 
