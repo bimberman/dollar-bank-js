@@ -128,7 +128,22 @@ app.post('/api/users/new-user', async (req, res, next) => {
   await db.query(`INSERT INTO dollar_bank.transactions (amount, label, user_id, account_id)
                                 VALUES (?, ?, ?, ?)`,
   [balance, `Initial ${type || 'CHECKING'} deposit`, dbUserId[0].id, dbAccountId[0].id]);
-  res.json(dbUserId[0]);
+  if (dbUserId.length) {
+    const row = dbUserId[0];
+    const { id, f_name: fName, l_name: lName, user_id: userId, address, phone, balance } = row;
+    const data = {
+      id,
+      fName,
+      lName,
+      address,
+      phone,
+      userId,
+      balance
+    };
+    res.json(data).status(200);
+    return;
+  }
+  res.sendStatus(401);
 });
 
 // update a user
