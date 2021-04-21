@@ -34,7 +34,7 @@ A JS project for Collabera
 
 1. Clone the repository
     ```shell
-    git clone https://github.com/bimberman/om.git
+    git clone https://github.com/bimberman/dollar-bank-js.git
     cd dollar-bank-js
     ```
 2. Edit the .env file
