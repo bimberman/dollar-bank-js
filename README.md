@@ -11,7 +11,7 @@ A JS project for Collabera
 ![NPM](https://icongr.am/devicon/npm-original-wordmark.svg?size=128&color=currentColor) 
 ![Node.js](https://icongr.am/devicon/nodejs-original-wordmark.svg?size=128&color=currentColor) 
 ![Express.js](https://icongr.am/devicon/express-original-wordmark.svg?size=128&color=currentColor) 
-![Redux]()
+![Redux](https://raw.githubusercontent.com/bimberman/dollar-bank-js/main/icons/redux.svg)
 
 ## Features
 
