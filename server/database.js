@@ -3,7 +3,7 @@ const mysql = require('mysql2');
 
 // eslint-disable-next-line new-cap
 const pool = new mysql.createPool({
-  host: process.env.DB_HOST_REMOTE,
+  host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
